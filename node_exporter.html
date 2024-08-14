@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Exporter Metrics</title>
+    <style>
+        #metrics {
+            white-space: pre-wrap; /* Preserve line breaks */
+            font-family: monospace; /* Use monospace font for better alignment */
+        }
+        .error {
+            color: red; /* Display error messages in red */
+        }
+    </style>
+</head>
+<body>
+    <h1>Node Exporter Metrics</h1>
+    <div id="metrics"></div>
+
+    <script>
+        // Function to fetch metrics from Node Exporter API
+        function fetchMetrics() {
+            fetch('http://localhost:9100/metrics')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Display the metrics data
+                    document.getElementById('metrics').textContent = data;
+                })
+                .catch(error => {
+                    // Display error message if fetching data fails
+                    document.getElementById('metrics').innerHTML = `<p class="error">${error}</p>`;
+                });
+        }
+
+        // Call fetchMetrics function when the page loads
+        window.onload = fetchMetrics;
+    </script>
+</body>
+</html>
